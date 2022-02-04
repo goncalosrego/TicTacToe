@@ -14,6 +14,7 @@ public class LoginManager : MonoBehaviour
     {
         if(usernameInputField.text != "" && passwordInputField.text != "")
         {
+            SceneManager.LoadScene("LobbyScene");
         }
         else
         {
