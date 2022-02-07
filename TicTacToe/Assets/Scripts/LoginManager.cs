@@ -1,23 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
 public class LoginManager : MonoBehaviour
 {
-    [SerializeField] TMP_InputField usernameInputField;
-    [SerializeField] TMP_InputField passwordInputField;
+    [SerializeField] private TMP_InputField usernameInputField;
+    [SerializeField] private TMP_InputField passwordInputField;
+    [SerializeField] private TMP_Text warningText;
 
+    /// <summary>
+    /// Logs in the user.
+    /// Is called when Login Button is clicked.
+    /// </summary>
     public void LoginUser()
     {
-        if(usernameInputField.text != "" && passwordInputField.text != "")
+        if(string.IsNullOrWhiteSpace(usernameInputField.text) || string.IsNullOrWhiteSpace(passwordInputField.text))
         {
+            warningText.gameObject.SetActive(true);
         }
         else
         {
-            Debug.Log("Username or Password empty!");
+            if (warningText.IsActive() == true)
+            {
+                warningText.gameObject.SetActive(false);
+            }
         }
     }
 }
