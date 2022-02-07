@@ -17,15 +17,29 @@ public class LobbyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerMovement.PlayerCollided())
+        if(playerMovement.PlayerIsInside())
         {
             EnablePlayGameUI();
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                StartGame();
+            }
+        }
+        else
+        {
+            DisablePlayGameUI();
         }
     }
 
     void EnablePlayGameUI()
     {
         playGameUI.SetActive(true);
+    }
+
+    void DisablePlayGameUI()
+    {
+        playGameUI.SetActive(false);
     }
 
     public void StartGame()

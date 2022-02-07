@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] GameObject detectionZone;
     Transform cachedTransform;
     string horizontalName = "Horizontal";
     string verticalName = "Vertical";
-    string detectionZoneTag = "DetectionZone";
     float moveSpeed = 5.0f;
-    bool playerCollided = false;
+    bool playerIsInside = false;
+    float mouseSensitivity = 2.0f;
+    float yaw;
+    float pitch;
 
     // Start is called before the first frame update
     void Start()
@@ -20,10 +23,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(PlayerCollided() == false)
-        {
-            MovePlayer();
-        }
+        MovePlayer();
+        RotatePlayer();
+        RotateCamera();
+        DetectPlayerCollision();
     }
 
     void MovePlayer()
@@ -35,20 +38,35 @@ public class PlayerMovement : MonoBehaviour
         cachedTransform.Translate(movement * moveSpeed * Time.deltaTime);
     }
 
-    void OnCollisionEnter(Collision collision)
+    void RotateCamera()
     {
-        if (collision.gameObject.tag == detectionZoneTag)
+        yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
+        pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        Camera.main.transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+    }
+
+    void RotatePlayer()
+    {
+        yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
+
+        cachedTransform.eulerAngles = new Vector3(0.0f, yaw, 0.0f);
+    }
+
+    void DetectPlayerCollision()
+    {
+        if (detectionZone.gameObject.GetComponent<BoxCollider>().bounds.Contains(cachedTransform.position))
         {
-            playerCollided = true;
+            playerIsInside = true;
         }
         else
         {
-            playerCollided = false;
+            playerIsInside = false;
         }
     }
 
-    public bool PlayerCollided()
+    public bool PlayerIsInside()
     {
-        return playerCollided;
+        return playerIsInside;
     }
 }
