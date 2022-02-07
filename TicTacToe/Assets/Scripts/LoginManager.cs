@@ -1,18 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class LoginManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TMP_InputField usernameInputField;
+    [SerializeField] private TMP_InputField passwordInputField;
+    [SerializeField] private TMP_Text warningText;
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Logs in the user.
+    /// Is called when Login Button is clicked.
+    /// </summary>
+    public void LoginUser()
     {
-        
+        if(string.IsNullOrWhiteSpace(usernameInputField.text) || string.IsNullOrWhiteSpace(passwordInputField.text))
+        {
+            warningText.gameObject.SetActive(true);
+        }
+        else
+        {
+            if (warningText.IsActive() == true)
+            {
+                warningText.gameObject.SetActive(false);
+            }
+        }
     }
 }
